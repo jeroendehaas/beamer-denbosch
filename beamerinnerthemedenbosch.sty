@@ -1,0 +1,73 @@
+% Copyright (c) 2022, Jeroen de Haas
+%
+% Redistribution and use in source and binary forms, with or without
+% modification, are permitted provided that the following conditions are met:
+%
+% 1. Redistributions of source code must retain the above copyright notice, this
+%    list of conditions and the following disclaimer.
+% 2. Redistributions in binary form must reproduce the above copyright notice,
+%    this list of conditions and the following disclaimer in the documentation
+%    and/or other materials provided with the distribution.
+%
+% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+% ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+% WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+% DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+% ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+% (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+% LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+% ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+% (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+% SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+\mode<presentation>
+
+\setbeamertemplate{background}{
+  \begin{tikzpicture}
+    \useasboundingbox (0,0) rectangle(\the\paperwidth, \the\paperheight);
+
+    \pgfmathsetmacro{\knikx}{0.17}
+    \pgfmathsetmacro{\kniky}{0.1}
+    \ifnum\thepage<2\relax%
+        \pgfmathsetmacro{\dy}{1}
+    \else
+        \pgfmathsetmacro{\dy}{-1}
+    \fi
+    \pgfmathsetmacro{\w}{\the\paperwidth}
+    \pgfmathsetmacro{\h}{\the\paperheight}
+    \pgfmathsetmacro{\tseven}{tan(7) * \dy}
+    \pgfmathsetmacro{\lhmult}{\knikx * \tseven}
+    \pgfmathsetmacro{\rhmult}{(1.0 - \knikx) * \tseven}
+
+    \coordinate (knikxpos) at (${\knikx}*(\the\paperwidth,0)$);
+    \coordinate (knikypos) at (${\kniky}*(0,\the\paperheight)$);
+    \coordinate (knik) at ($(knikxpos) + (knikypos)$);
+    \coordinate (l) at ($(knikypos)  + {\lhmult}*(0,\the\paperwidth)$);
+    \coordinate (r) at ($(\the\paperwidth,0) + (knikypos) + {\rhmult}*(0,\the\paperwidth)$);
+    %\fill[white] (0,0) rectangle(\w,\h);
+    \ifnum\thepage<2\relax%
+      \fill[Avans] (l) .. controls (knik) and (knik) .. (r) -- (\the\paperwidth, \the\paperheight) -- (0,\the\paperheight) -- cycle;
+      \fi
+    \end{tikzpicture}
+}
+
+\defbeamertemplate*{title page}{denbosch}[1][]
+{
+  \begin{beamercolorbox}[#1]{title page header}
+    \usebeamerfont{title}\inserttitle\par%
+  \end{beamercolorbox}%
+  \vskip0.25cm%
+  \begin{beamercolorbox}[#1]{author}
+      \usebeamerfont{author}\insertauthor%
+  \end{beamercolorbox}
+  \vfill
+  \begin{beamercolorbox}[#1]{date}
+      \usebeamerfont{date}\insertdate%
+  \end{beamercolorbox}
+}
+
+\defbeamertemplate*{section page}{denbosch}[1][]
+{
+  \begin{beamercolorbox}[#1]{section name}
+    \usebeamerfont{section name}\insertsection\par%
+  \end{beamercolorbox}%
+}
