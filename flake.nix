@@ -3,13 +3,13 @@
   outputs = { self, flake-utils, nixpkgs, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let pkgs = import nixpkgs { inherit system; };
-       in rec {
-         packages.beamer-denbosch = pkgs.stdenvNoCC.mkDerivation {
-           pname = "beamertheme-denbosch";
+          latex-beamer-denbosch-raw = pkgs.stdenvNoCC.mkDerivation {
+           pname = "latex-beamertheme-denbosch";
            version = "0.1";
-           tlType = "run";
+           passthru.tlType = "run";
+
            src = builtins.path { path = ./.; name = "beamertheme-denbosch-src"; };
-           unpackPhase = "true";
+
            buildPhase = "true";
            installPhase = ''
              dst="$out/tex/latex/beamertheme-denbosch"
@@ -17,6 +17,14 @@
              cp *.sty "$dst"
            '';
          };
-         defaultPackage = packages.beamer-denbosch;
+       in {
+         packages = {
+           inherit latex-beamer-denbosch-raw;
+           latex-beamertheme-denbosch = {
+             pkgs = [
+               latex-beamer-denbosch-raw
+             ];
+           };
+         };
     });
 }
